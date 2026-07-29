@@ -281,9 +281,10 @@ const CACHE_DIR = path.join(getAgentDir(), "cache");
 const CACHE_PATH = path.join(CACHE_DIR, `${PROVIDER_ID}-models.json`);
 const LIVE_FETCH_TIMEOUT_MS = 8000;
 
-async function fetchLiveModels(signal?: AbortSignal): Promise<JsonModel[] | null> {
+async function fetchLiveModels(apiKey: string | undefined, signal?: AbortSignal): Promise<JsonModel[] | null> {
   try {
     const response = await fetch(MODELS_URL, {
+      headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : {},
       signal: signal ? AbortSignal.any([AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS), signal]) : AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS),
     });
     if (!response.ok) return null;
@@ -392,11 +393,12 @@ function loadStaleModels(embeddedModels: JsonModel[]): JsonModel[] {
   return cached;
 }
 
-async function revalidateModels(embeddedModels: JsonModel[], signal?: AbortSignal): Promise<JsonModel[] | null> {
+async function revalidateModels(apiKey: string | undefined, embeddedModels: JsonModel[], signal?: AbortSignal): Promise<JsonModel[] | null> {
   // /v1/models is public on Merius — revalidate even without an API key so the
   // catalogue stays fresh before a key is configured. A key is only needed to
-  // actually call a model.
-  const liveModels = await fetchLiveModels(signal);
+  // actually call a model. The Authorization header is still sent when a key is
+  // available, in case the endpoint becomes auth-gated later.
+  const liveModels = await fetchLiveModels(apiKey, signal);
   if (!liveModels || liveModels.length === 0) return null;
   const merged = mergeWithEmbedded(liveModels, embeddedModels);
   cacheModels(merged);
@@ -434,10 +436,10 @@ export default function (pi: ExtensionAPI) {
     revalidateAbort?.abort();
     revalidateAbort = new AbortController();
     const signal = revalidateAbort.signal;
-    // Resolve the key (for provider registration) but revalidate from the public
-    // /v1/models endpoint regardless of whether a key is present.
-    resolveApiKey(ctx.modelRegistry).finally(() => {
-      revalidateModels(embeddedModels, signal).then((freshBase) => {
+    // /v1/models is public, so revalidation proceeds with or without a key; the
+    // key is still threaded through so the Bearer header is sent when available.
+    resolveApiKey(ctx.modelRegistry).then((apiKey) => {
+      revalidateModels(apiKey, embeddedModels, signal).then((freshBase) => {
         if (freshBase && !signal.aborted) {
           pi.registerProvider("merius", {
             baseUrl: BASE_URL,
