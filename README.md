@@ -6,6 +6,7 @@
 
 _One OpenAI-compatible API to open models on Merius's own GPUs — DeepSeek, GLM, Kimi, MiniMax, and more._
 
+[![npm](https://img.shields.io/npm/v/pi-merius-provider)](https://www.npmjs.com/package/pi-merius-provider)
 [![pi extension](https://img.shields.io/badge/pi-extension-blueviolet)](https://github.com/earendil-works/pi-coding-agent)
 [![license](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 
@@ -39,9 +40,13 @@ _One OpenAI-compatible API to open models on Merius's own GPUs — DeepSeek, GLM
 
 ### Option 1: Using `pi install` (Recommended)
 
-Install directly from GitHub:
+Install from npm (published as [`pi-merius-provider`](https://www.npmjs.com/package/pi-merius-provider)) or directly from GitHub:
 
 ```bash
+# From npm
+pi install npm:pi-merius-provider
+
+# Or directly from GitHub
 pi install https://github.com/monotykamary/pi-merius-provider
 ```
 
