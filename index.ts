@@ -409,8 +409,10 @@ async function revalidateModels(apiKey: string | undefined, embeddedModels: Json
 
 let revalidateAbort: AbortController | null = null;
 
-// Key is only resolved so the provider registration can reference it; the SWR
-// fetch itself needs no key (see revalidateModels).
+// Resolved so it can be threaded into the SWR fetch (the Bearer header is sent
+// when available — harmless while /v1/models stays public). The provider's own
+// apiKey is the "$MERIUS_API_KEY" placeholder, resolved by pi core at request
+// time; the SWR fetch needs no key while /v1/models is public.
 async function resolveApiKey(modelRegistry: ModelRegistry): Promise<string | undefined> {
   return (await modelRegistry.getApiKeyForProvider("merius")) ?? undefined;
 }
