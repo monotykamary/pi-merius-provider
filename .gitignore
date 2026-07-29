@@ -4,3 +4,4 @@ node_modules/
 tsconfig.json
 stub.d.ts
 pnpm-workspace.yaml
+scripts/probe-results/

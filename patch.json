@@ -1,1 +1,33 @@
-{}
+{
+  "z-ai/glm-5.2": {
+    "thinkingLevelMap": {
+      "off": "none",
+      "minimal": "high",
+      "low": "high",
+      "medium": "high",
+      "high": "high",
+      "max": "max"
+    }
+  },
+  "minimax/minimax-m3": {
+    "compat": {
+      "thinkingFormat": "zai"
+    }
+  },
+  "deepseek-ai/DeepSeek-V4-Flash": {
+    "compat": {
+      "thinkingFormat": "deepseek"
+    }
+  },
+  "moonshotai/Kimi-K3": {
+    "input": ["text", "image"],
+    "thinkingLevelMap": {
+      "off": "none",
+      "minimal": null,
+      "low": null,
+      "medium": null,
+      "high": "high",
+      "max": "max"
+    }
+  }
+}
