@@ -16,7 +16,8 @@
   },
   "deepseek-ai/DeepSeek-V4-Flash": {
     "compat": {
-      "thinkingFormat": "deepseek"
+      "thinkingFormat": "deepseek",
+      "requiresReasoningContentOnAssistantMessages": true
     }
   },
   "moonshotai/Kimi-K3": {
