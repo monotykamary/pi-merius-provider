@@ -29,8 +29,8 @@ _One OpenAI-compatible API to open models on Merius's own GPUs — DeepSeek, GLM
 
 | Model | Context | Vision | Reasoning | Input $/M | Output $/M |
 |-------|---------|--------|-----------|-----------|------------|
-| DeepSeek V4 Flash | 1.0M | ❌ | ✅ | $0.30 | $1.10 |
-| GLM-5.2 | 524K | ❌ | ✅ | $0.60 | $2.20 |
+| DeepSeek V4 Flash | 1.0M | ❌ | ✅ | $0.09 | $0.18 |
+| GLM-5.2 | 1.0M | ❌ | ✅ | $0.60 | $2.20 |
 | Kimi K3 | 1.0M | ✅ | ✅ | $2.50 | $13.00 |
 | MiniMax M3 | 524K | ❌ | ✅ | $0.30 | $1.20 |
 

@@ -7,9 +7,9 @@
       "text"
     ],
     "cost": {
-      "input": 0.3,
-      "output": 1.1,
-      "cacheRead": 0,
+      "input": 0.09,
+      "output": 0.18,
+      "cacheRead": 0.02,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,
@@ -37,7 +37,7 @@
     "cost": {
       "input": 0.3,
       "output": 1.2,
-      "cacheRead": 0,
+      "cacheRead": 0.06,
       "cacheWrite": 0
     },
     "contextWindow": 524288,
@@ -60,12 +60,13 @@
     "name": "Kimi K3",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 2.5,
       "output": 13,
-      "cacheRead": 0,
+      "cacheRead": 0.25,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,
@@ -93,10 +94,10 @@
     "cost": {
       "input": 0.6,
       "output": 2.2,
-      "cacheRead": 0,
+      "cacheRead": 0.14,
       "cacheWrite": 0
     },
-    "contextWindow": 524288,
+    "contextWindow": 1048576,
     "maxTokens": 128000,
     "compat": {
       "thinkingFormat": "openai",
