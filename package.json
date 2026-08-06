@@ -1,6 +1,6 @@
 {
   "name": "pi-merius-provider",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Merius provider extension for pi - Open models on Merius's own GPUs via an OpenAI-compatible API",
   "type": "module",
   "main": "index.ts",
@@ -53,7 +53,7 @@
     ]
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "^0.83.0",
+    "@earendil-works/pi-coding-agent": "^0.84.0",
     "@types/node": "^25.9.1",
     "typescript": "^6.0.3"
   },
