@@ -28,6 +28,34 @@
     }
   },
   {
+    "id": "deepseek-ai/DeepSeek-V4-Pro",
+    "name": "DeepSeek V4 Pro",
+    "reasoning": true,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.435,
+      "output": 0.87,
+      "cacheRead": 0.09,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 384000,
+    "compat": {
+      "thinkingFormat": "openai",
+      "supportsReasoningEffort": true,
+      "supportsDeveloperRole": false
+    },
+    "thinkingLevelMap": {
+      "minimal": null,
+      "low": null,
+      "medium": null,
+      "high": "high",
+      "max": "max"
+    }
+  },
+  {
     "id": "minimax/minimax-m3",
     "name": "MiniMax M3",
     "reasoning": true,
@@ -65,7 +93,7 @@
     ],
     "cost": {
       "input": 2.5,
-      "output": 13,
+      "output": 10,
       "cacheRead": 0.25,
       "cacheWrite": 0
     },
