@@ -1,6 +1,6 @@
 {
   "name": "pi-merius-provider",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Merius provider extension for pi - Open models on Merius's own GPUs via an OpenAI-compatible API",
   "type": "module",
   "main": "index.ts",
