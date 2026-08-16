@@ -1,10 +1,10 @@
 /**
- * Merius Provider Extension
+ * Tarmis Provider Extension
  *
- * Registers Merius (merius.ai) as a custom provider using the openai-completions API.
- * Base URL: https://api.merius.ai/v1
+ * Registers Tarmis (tarmis.ai) as a custom provider using the openai-completions API.
+ * Base URL: https://api.tarmis.ai/v1
  *
- * Merius hosts open-weight models on its own GPUs behind a single
+ * Tarmis hosts open-weight models on its own GPUs behind a single
  * OpenAI-compatible Chat Completions endpoint. The /v1/models endpoint returns
  * rich metadata per model — name, per-token pricing (prompt, completion, and an
  * optional cached-input rate), context_length, max_output_length,
@@ -15,7 +15,7 @@
  * Key API characteristics:
  *   - OpenAI Chat Completions compatible (/v1/chat/completions)
  *   - /v1/models is PUBLIC — the model catalog is fetched without an API key,
- *     so pi lists Merius models (and the SWR revalidation runs) even before a
+ *     so pi lists Tarmis models (and the SWR revalidation runs) even before a
  *     key is configured. A key is only required to actually call a model.
  *   - Pricing is per-token in the API; converted to per-million tokens for pi.
  *   - supported_features drives reasoning + tool support automatically.
@@ -24,7 +24,7 @@
  *   The API reports which models support reasoning, but not the wire format
  *   each model expects. Reasoning models are given the standard OpenAI-
  *   compatible defaults (thinkingFormat: "openai", supportsReasoningEffort:
- *   true, supportsDeveloperRole: false). If a model on Merius needs a different
+ *   true, supportsDeveloperRole: false). If a model on Tarmis needs a different
  *   format (e.g. DeepSeek's native thinking field), override it in patch.json —
  *   see AGENTS.md.
  *
@@ -38,18 +38,18 @@
  * Usage:
  *   # Option 1: Store in auth.json (recommended)
  *   # Add to ~/.pi/agent/auth.json:
- *   #   "merius": { "type": "api_key", "key": "your-api-key" }
+ *   #   "tarmis": { "type": "api_key", "key": "your-api-key" }
  *
  *   # Option 2: Set as environment variable
- *   export MERIUS_API_KEY=your-api-key
+ *   export TARMIS_API_KEY=your-api-key
  *
  *   # Run pi with the extension
- *   pi -e /path/to/pi-merius-provider
+ *   pi -e /path/to/pi-tarmis-provider
  *
  * Then use /model to select from available models like DeepSeek V4 Flash,
  * GLM-5.2, MiniMax M3, Kimi K3, and more.
  *
- * @see https://docs.merius.ai
+ * @see https://docs.tarmis.ai
  */
 
 import { getAgentDir, type ExtensionAPI, type ModelRegistry } from "@earendil-works/pi-coding-agent";
@@ -173,9 +173,9 @@ function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): 
   return Array.from(modelMap.values());
 }
 
-// ─── Merius /v1/models transform ──────────────────────────────────────────────
+// ─── Tarmis /v1/models transform ──────────────────────────────────────────────
 //
-// Merius returns rich per-model metadata, so we derive as much as possible
+// Tarmis returns rich per-model metadata, so we derive as much as possible
 // directly from the API instead of curating it by hand:
 //   - name           <- apiModel.name (trailing parentheticals stripped)
 //   - reasoning      <- supported_features includes "reasoning"
@@ -231,7 +231,7 @@ function transformApiModel(apiModel: any): JsonModel | null {
       ? apiModel.pricing[0]
       : {};
 
-  // Accept either OpenAI-style (prompt/completion) or Merius alt spellings.
+  // Accept either OpenAI-style (prompt/completion) or Tarmis alt spellings.
   const inputCost = toPerMillion(pricingEntry.prompt ?? pricingEntry.input);
   const outputCost = toPerMillion(pricingEntry.completion ?? pricingEntry.output);
   const cacheRead = toPerMillion(pricingEntry.input_cache_read ?? pricingEntry.cache_read);
@@ -277,8 +277,8 @@ function transformApiModel(apiModel: any): JsonModel | null {
 
 // ─── Stale-While-Revalidate Model Sync ────────────────────────────────────────
 
-const PROVIDER_ID = "merius";
-const BASE_URL = "https://api.merius.ai/v1";
+const PROVIDER_ID = "tarmis";
+const BASE_URL = "https://api.tarmis.ai/v1";
 const MODELS_URL = `${BASE_URL}/models`;
 const CACHE_DIR = path.join(getAgentDir(), "cache");
 const CACHE_PATH = path.join(CACHE_DIR, `${PROVIDER_ID}-models.json`);
@@ -397,7 +397,7 @@ function loadStaleModels(embeddedModels: JsonModel[]): JsonModel[] {
 }
 
 async function revalidateModels(apiKey: string | undefined, embeddedModels: JsonModel[], signal?: AbortSignal): Promise<JsonModel[] | null> {
-  // /v1/models is public on Merius — revalidate even without an API key so the
+  // /v1/models is public on Tarmis — revalidate even without an API key so the
   // catalogue stays fresh before a key is configured. A key is only needed to
   // actually call a model. The Authorization header is still sent when a key is
   // available, in case the endpoint becomes auth-gated later.
@@ -414,10 +414,10 @@ let revalidateAbort: AbortController | null = null;
 
 // Resolved so it can be threaded into the SWR fetch (the Bearer header is sent
 // when available — harmless while /v1/models stays public). The provider's own
-// apiKey is the "$MERIUS_API_KEY" placeholder, resolved by pi core at request
+// apiKey is the "$TARMIS_API_KEY" placeholder, resolved by pi core at request
 // time; the SWR fetch needs no key while /v1/models is public.
 async function resolveApiKey(modelRegistry: ModelRegistry): Promise<string | undefined> {
-  return (await modelRegistry.getApiKeyForProvider("merius")) ?? undefined;
+  return (await modelRegistry.getApiKeyForProvider("tarmis")) ?? undefined;
 }
 
 // ─── Extension Entry Point ────────────────────────────────────────────────────
@@ -430,9 +430,9 @@ export default function (pi: ExtensionAPI) {
   const staleBase = loadStaleModels(embeddedModels);
   const staleModels = buildModels(staleBase, customModels, patches);
 
-  pi.registerProvider("merius", {
+  pi.registerProvider("tarmis", {
     baseUrl: BASE_URL,
-    apiKey: "$MERIUS_API_KEY",
+    apiKey: "$TARMIS_API_KEY",
     api: "openai-completions",
     models: staleModels,
   });
@@ -446,9 +446,9 @@ export default function (pi: ExtensionAPI) {
     resolveApiKey(ctx.modelRegistry).then((apiKey) => {
       revalidateModels(apiKey, embeddedModels, signal).then((freshBase) => {
         if (freshBase && !signal.aborted) {
-          pi.registerProvider("merius", {
+          pi.registerProvider("tarmis", {
             baseUrl: BASE_URL,
-            apiKey: "$MERIUS_API_KEY",
+            apiKey: "$TARMIS_API_KEY",
             api: "openai-completions",
             models: buildModels(freshBase, customModels, patches),
           });

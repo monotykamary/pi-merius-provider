@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * Update Merius models from API
+ * Update Tarmis models from API
  *
- * Fetches models from https://api.merius.ai/v1/models (public — no API key
+ * Fetches models from https://api.tarmis.ai/v1/models (public — no API key
  * required) and updates:
  * - models.json: model definitions built from the API's rich metadata
  * - README.md: Model table with patch.json overrides applied
  *
- * Merius /v1/models returns per-model metadata (name, per-token pricing,
+ * Tarmis /v1/models returns per-model metadata (name, per-token pricing,
  * context_length, max_output_length, input_modalities, supported_features, etc.).
  * transformModel derives reasoning, vision, pricing, context window, and max
  * output directly from that metadata. patch.json overrides anything the API
@@ -15,8 +15,8 @@
  *
  * Merge order for README: models.json -> apply patch.json -> merge custom-models.json
  *
- * API key: optional. The stored `merius` credential in ~/.pi/agent/auth.json (or
- * MERIUS_API_KEY) is sent when it resolves; the public endpoint returned the full
+ * API key: optional. The stored `tarmis` credential in ~/.pi/agent/auth.json (or
+ * TARMIS_API_KEY) is sent when it resolves; the public endpoint returned the full
  * catalog unauthenticated at last check, so running without one is acceptable.
  */
 
@@ -112,13 +112,13 @@ function resolveConfigValue(config, env) {
 
 /**
  * The API key, resolved the way pi itself resolves it for this provider: the
- * stored `merius` credential in ~/.pi/agent/auth.json wins, then
- * the MERIUS_API_KEY environment variable.
+ * stored `tarmis` credential in ~/.pi/agent/auth.json wins, then
+ * the TARMIS_API_KEY environment variable.
  */
 function resolveApiKey() {
   try {
     const auth = JSON.parse(fs.readFileSync(AUTH_JSON_PATH, 'utf8'));
-    const credential = auth?.merius;
+    const credential = auth?.tarmis;
     if (credential && credential.type === 'api_key' && typeof credential.key === 'string') {
       const key = resolveConfigValue(credential.key, credential.env);
       if (key) return key;
@@ -126,10 +126,10 @@ function resolveApiKey() {
   } catch {
     // Missing or unparseable auth.json: fall through to the env var.
   }
-  return process.env.MERIUS_API_KEY || undefined;
+  return process.env.TARMIS_API_KEY || undefined;
 }
 
-const MODELS_API_URL = 'https://api.merius.ai/v1/models';
+const MODELS_API_URL = 'https://api.tarmis.ai/v1/models';
 const MODELS_JSON_PATH = path.join(__dirname, '..', 'models.json');
 const PATCH_JSON_PATH = path.join(__dirname, '..', 'patch.json');
 const CUSTOM_MODELS_JSON_PATH = path.join(__dirname, '..', 'custom-models.json');
@@ -203,7 +203,7 @@ function buildModels(baseModels, customModels, patchData) {
   return Array.from(modelMap.values());
 }
 
-// ─── Merius /v1/models transform ─────────────────────────────────────────────
+// ─── Tarmis /v1/models transform ─────────────────────────────────────────────
 
 function toPerMillion(perToken) {
   if (perToken === undefined || perToken === null) return 0;
@@ -405,7 +405,7 @@ async function main() {
 
   try {
     const apiKey = resolveApiKey();
-    // Merius /v1/models is public and complete (verified against the curated
+    // Tarmis /v1/models is public and complete (verified against the curated
     // catalog); send the credential when one resolves, proceed without it.
     const headers = apiKey ? { Authorization: `Bearer ${apiKey}` } : {};
 

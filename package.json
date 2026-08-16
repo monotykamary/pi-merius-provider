@@ -1,7 +1,7 @@
 {
-  "name": "pi-merius-provider",
+  "name": "pi-tarmis-provider",
   "version": "1.0.7",
-  "description": "Merius provider extension for pi - Open models on Merius's own GPUs via an OpenAI-compatible API",
+  "description": "Tarmis provider extension for pi - Open models on Tarmis's own GPUs via an OpenAI-compatible API",
   "type": "module",
   "main": "index.ts",
   "scripts": {
@@ -14,7 +14,7 @@
     "pi",
     "extension",
     "provider",
-    "merius",
+    "tarmis",
     "ai",
     "llm",
     "openai-compatible",
@@ -25,13 +25,13 @@
   ],
   "author": "monotykamary",
   "license": "MIT",
-  "homepage": "https://github.com/monotykamary/pi-merius-provider#readme",
+  "homepage": "https://github.com/monotykamary/pi-tarmis-provider#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/monotykamary/pi-merius-provider.git"
+    "url": "git+https://github.com/monotykamary/pi-tarmis-provider.git"
   },
   "bugs": {
-    "url": "https://github.com/monotykamary/pi-merius-provider/issues"
+    "url": "https://github.com/monotykamary/pi-tarmis-provider/issues"
   },
   "files": [
     "index.ts",

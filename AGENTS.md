@@ -21,9 +21,9 @@ When a model needs overrides, new properties, or corrections, edit the appropria
 | `index.ts` | Provider extension code. |
 | `scripts/update-models.js` | The sync script itself (edit only if changing how models are fetched/transformed). |
 
-## How Merius differs from other providers
+## How Tarmis differs from other providers
 
-Merius's `/v1/models` endpoint returns **rich metadata** (name, per-token pricing with an optional cached-input rate, `context_length`, `max_output_length`, `input_modalities`, and `supported_features`). `transformModel` derives most model fields directly from the API, so `models.json` self-heals on every sync:
+Tarmis's `/v1/models` endpoint returns **rich metadata** (name, per-token pricing with an optional cached-input rate, `context_length`, `max_output_length`, `input_modalities`, and `supported_features`). `transformModel` derives most model fields directly from the API, so `models.json` self-heals on every sync:
 
 - `reasoning` ← `supported_features` includes `"reasoning"`
 - `input` / vision ← `input_modalities` includes `"image"`

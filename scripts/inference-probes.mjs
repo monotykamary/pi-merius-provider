@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * inference-probes.mjs — lean provider-quality probes for Merius, complementing synbad.
+ * inference-probes.mjs — lean provider-quality probes for Tarmis, complementing synbad.
  *
  * Covers what synbad doesn't:
  *   P1  reasoning field shape (reasoning vs reasoning_content) + preserved-thinking round-trip
@@ -9,7 +9,7 @@
  *   P4  sampling/logit acceptance: stop strings, logprobs, logit_bias
  *   P5  vision: single-image QA + 24-image burst on Kimi K3; graceful rejection elsewhere
  *
- * Usage: MERIUS_API_KEY=... node scripts/inference-probes.mjs [--only <modelId>]
+ * Usage: TARMIS_API_KEY=... node scripts/inference-probes.mjs [--only <modelId>]
  */
 
 import fs from "node:fs";
@@ -17,9 +17,9 @@ import path from "node:path";
 import zlib from "node:zlib";
 import { fileURLToPath } from "node:url";
 
-const BASE = process.env.MERIUS_BASE_URL ?? "https://api.merius.ai/v1";
-const KEY = process.env.MERIUS_API_KEY;
-if (!KEY) { console.error("MERIUS_API_KEY env var required"); process.exit(2); }
+const BASE = process.env.TARMIS_BASE_URL ?? "https://api.tarmis.ai/v1";
+const KEY = process.env.TARMIS_API_KEY;
+if (!KEY) { console.error("TARMIS_API_KEY env var required"); process.exit(2); }
 
 const ALL_MODELS = [
   "z-ai/glm-5.2",
