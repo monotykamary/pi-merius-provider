@@ -1,6 +1,6 @@
 {
   "name": "pi-tarmis-provider",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Tarmis provider extension for pi - Open models on Tarmis's own GPUs via an OpenAI-compatible API",
   "type": "module",
   "main": "index.ts",
